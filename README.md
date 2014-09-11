@@ -6,6 +6,9 @@ which you can copy and paste your chart. Already included in the repository are
 bar charts for a few Swedish elections (1973, 1985, 1994, 2006) and prognoses
 for the 2014 election. 
 
+Based on the answer found here:
+http://tex.stackexchange.com/questions/58548/is-it-possible-to-change-the-color-of-a-single-bar-when-the-bar-plot-is-based-on/
+
 #### Copyright License 
 The contents of this repository are licensed under a Creative Commons
 Attribution-ShareAlike 4.0 International License. That means that anyone is
