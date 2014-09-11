@@ -31,6 +31,7 @@
 
 \begin{document}
 
+% ADD YOUR DATA BELOW
 \begin{filecontents}{src.csv}
 {Procent}, {Parti}
 6.8, V
@@ -43,6 +44,7 @@
 22.6, M
 1.6, Fi
 \end{filecontents}
+%ADD YOUR DATA ABOVE
 
 \pgfplotstablegetrowsof{src.csv}
 
@@ -72,6 +74,7 @@
 	nodes near coords,
     ] 
 
+    % EDIT COLUMN LABEL AND ENTRY VALUES INSIDE {} AFTER discard if= BELOW FOR EACH ENTRY
     \addplot [fill=olive!15!white,discard if={Parti}{V}] table [x expr=\coordindex,y index=0,col sep=comma]{src.csv};
 
 	%Vänsterpartiet 
