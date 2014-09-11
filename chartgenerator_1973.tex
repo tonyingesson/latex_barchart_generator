@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{pgfplots} 
+\pgfplotsset{compat=1.8}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplotstable}
+\usepackage[T1]{fontenc}
+\usepackage{filecontents}
+
+\pgfplotsset{
+    discard if/.style 2 args={
+        x filter/.code={
+            \edef\tempa{\thisrow{#1}}
+            \edef\tempb{#2}
+            \ifx\tempa\tempb
+                \def\pgfmathresult{inf}
+            \fi
+        }
+    },
+    discard if not/.style 2 args={
+        x filter/.code={
+            \edef\tempa{\thisrow{#1}}
+            \edef\tempb{#2}
+            \ifx\tempa\tempb
+            \else
+                \def\pgfmathresult{inf}
+            \fi
+        }
+    }
+}
+
+
+\begin{document}
+
+\begin{filecontents}{src.csv}
+{Procent}, {Parti}
+5.33, Vpk
+43.6, S
+25.1, C
+9.4, Fp
+1.75, Kds
+14.3, M
+0.16, KFML
+\end{filecontents}
+
+\pgfplotstablegetrowsof{src.csv}
+
+\begin{tikzpicture} 
+    
+\pgfplotsset{ every non boxed x axis/.append style={x axis line style=-} }
+\pgfplotsset{ every non boxed y axis/.append style={y axis line style=-} }
+    
+    \begin{axis}[ 
+	ymax=50, 
+	width=12cm,
+	height=10cm,
+	axis lines=left,
+	ybar,/pgf/bar shift=0pt,
+	enlarge x limits={value=0.1, upper},
+	enlarge y limits=0.1,
+	ylabel={procent}, 
+	ytick={0,5,10,15,20,25,30,35,40,45}, 
+	xtick={0,1,2,3,4,5,6,7,8,9,\pgfplotsretval},
+	x axis line style={draw opacity=0}, 
+	y axis line style={draw opacity=0},
+	scaled y ticks=false, 
+	x tick label style={major tick length=0pt},
+	xticklabels from table={src.csv}{[index]1}, 
+	enlarge x limits=0.08, 
+	bar width=20pt, 
+	nodes near coords,
+    ] 
+
+    \addplot [fill=olive!15!white,discard if={Parti}{V}] table [x expr=\coordindex,y index=0,col sep=comma]{src.csv};
+
+	%Vpk
+    \addplot [fill=red!65!black,discard if not={Parti}{Vpk}] table [x expr=\coordindex,
+    y index=0,col sep=comma]{src.csv};
+
+	%Socialdemokraterna 
+    \addplot [fill=red,discard if not={Parti}{S}] table [x expr=\coordindex,
+    y index=0,col sep=comma]{src.csv};
+
+    	%Centern
+    \addplot [draw,fill=green!70!gray,discard if not={Parti}{C}] table [x expr=\coordindex,
+    y index=0,col sep=comma]{src.csv};
+
+    	%Folkpartiet
+    \addplot [draw,fill=cyan!60!white,discard if not={Parti}{Fp}] table [x expr=\coordindex,
+    y index=0,col sep=comma]{src.csv};
+
+    	%Kristdemokraterna
+    \addplot [draw,fill=blue!60!black,discard if not={Parti}{Kds}] table [x expr=\coordindex,
+    y index=0,col sep=comma]{src.csv};
+    	
+    	%Moderaterna
+    \addplot [draw,fill=cyan!90!black,discard if not={Parti}{M}] table [x expr=\coordindex,
+    y index=0,col sep=comma]{src.csv};
+
+    %KFML
+    \addplot [draw,fill=red!30!white,discard if not={Parti}{KFML}] table [x expr=\coordindex,
+    y index=0,col sep=comma]{src.csv};
+
+
+
+  
+\end{axis} 
+\end{tikzpicture} 
+
+\end{document}
+
